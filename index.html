@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Document Organizer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%236366f1' d='M4 3h10l4 4v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z'/><path fill='%23ffffff' d='M9 13h6v4H9z'/><path fill='none' stroke='%23ffffff' stroke-width='1.5' d='M10.5 13v-1.5a1.5 1.5 0 1 1 3 0V13'/></svg>"
+    />
+  </head>
+  <body>
+    <!-- Mobile topbar -->
+    <header class="topbar">
+      <button
+        id="mobile-menu-btn"
+        class="hamburger-btn"
+        aria-label="Toggle menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="topbar-title">DocVault</div>
+    </header>
+
+    <!-- Initial setup overlay -->
+    <div id="setup-screen" class="setup-overlay hidden">
+      <div class="setup-card">
+        <h2>Welcome</h2>
+        <p class="subtitle">Set up your profile to begin</p>
+
+        <div class="field">
+          <label>Display Name</label>
+          <input
+            id="setup-displayname"
+            type="text"
+            placeholder="Enter your name (optional)"
+          />
+        </div>
+
+        <div class="field">
+          <label>Enable Protected Vault?</label>
+          <select id="setup-vault-choice">
+            <option value="yes">Yes – I want a secure vault</option>
+            <option value="no">No – I only want normal documents</option>
+          </select>
+        </div>
+
+        <div id="password-area" class="field">
+          <label>Set Vault Password</label>
+          <input
+            id="setup-password"
+            type="password"
+            placeholder="Enter a strong password"
+          />
+        </div>
+
+        <button id="setup-save-btn" class="btn btn-primary full-btn">
+          Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- Vault unlock modal -->
+    <div id="vault-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Unlock Protected Vault</h3>
+        <p class="modal-subtitle">
+          Enter your password to access secure documents
+        </p>
+
+        <div class="field">
+          <label>Password</label>
+          <input
+            id="vault-password-input"
+            type="password"
+            placeholder="Enter vault password"
+          />
+        </div>
+
+        <div class="modal-buttons">
+          <button id="vault-unlock-btn" class="btn btn-primary">Unlock</button>
+          <button id="vault-cancel-btn" class="btn btn-ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- App layout -->
+    <div id="app-container" class="app hidden">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="app-title">DocVault</h1>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-page="dashboard-page">
+            <span class="icon">📊</span> Dashboard
+          </button>
+
+          <button class="nav-item" data-page="normal-docs-page">
+            <span class="icon">📄</span> Normal Documents
+          </button>
+
+          <button class="nav-item" data-page="vault-page">
+            <span class="icon">🔒</span> Protected Vault
+          </button>
+
+          <button class="nav-item" data-page="profile-page">
+            <span class="icon">👤</span> Profile
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <main id="main-content">
+        <!-- Dashboard page -->
+        <section id="dashboard-page" class="page visible">
+          <h2 class="page-title">Dashboard</h2>
+
+          <div class="card-grid">
+            <div class="info-card">
+              <h3>Normal Documents</h3>
+              <p id="count-normal" class="big-number">0</p>
+            </div>
+
+            <div class="info-card">
+              <h3>Protected Documents</h3>
+              <p id="count-protected" class="big-number">0</p>
+            </div>
+
+            <div class="info-card vault-status-card">
+              <h3>Vault Status</h3>
+              <p id="vault-status-text" class="big-number small">Locked</p>
+              <button id="open-vault-btn" class="btn btn-accent small-btn">
+                Unlock Vault
+              </button>
+            </div>
+
+            <div class="info-card">
+              <h3>Recent Documents</h3>
+              <div id="recent-docs-list" class="recent-docs"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Normal docs page -->
+        <section id="normal-docs-page" class="page">
+          <h2 class="page-title">Normal Documents</h2>
+
+          <div class="add-doc-area">
+            <input
+              id="normal-title"
+              class="doc-input"
+              type="text"
+              placeholder="Document title"
+            />
+            <textarea
+              id="normal-content"
+              class="doc-textarea"
+              placeholder="Document content"
+            ></textarea>
+            <button id="add-normal-btn" class="btn btn-primary">
+              Add Document
+            </button>
+          </div>
+
+          <div class="search-row">
+            <input
+              id="normal-search"
+              class="doc-search"
+              type="text"
+              placeholder="Search by title..."
+            />
+          </div>
+
+          <div id="normal-docs-list" class="docs-list"></div>
+        </section>
+
+        <!-- Vault page -->
+        <section id="vault-page" class="page">
+          <h2 class="page-title">Protected Vault</h2>
+          <p class="description">
+            Your encrypted documents appear here once you unlock the vault.
+          </p>
+
+          <button
+            id="lock-vault-btn"
+            class="btn btn-ghost"
+            style="margin-bottom: 12px"
+          >
+            Lock Vault
+          </button>
+
+          <div class="add-doc-area">
+            <input
+              id="vault-title"
+              class="doc-input"
+              type="text"
+              placeholder="Secure document title"
+            />
+            <textarea
+              id="vault-content"
+              class="doc-textarea"
+              placeholder="Encrypted content"
+            ></textarea>
+            <button id="add-vault-btn" class="btn btn-primary">
+              Add to Vault
+            </button>
+          </div>
+
+          <div class="search-row">
+            <input
+              id="vault-search"
+              class="doc-search"
+              type="text"
+              placeholder="Search vault by title..."
+            />
+          </div>
+
+          <div id="vault-docs-list" class="docs-list"></div>
+
+          <div class="vault-backup-row">
+            <button id="vault-export-btn" class="btn btn-ghost">
+              Export Vault Backup
+            </button>
+            <button id="vault-import-btn" class="btn btn-ghost">
+              Import Vault Backup
+            </button>
+            <input
+              id="vault-import-input"
+              type="file"
+              accept=".vault,application/json"
+              class="hidden"
+            />
+          </div>
+        </section>
+
+        <!-- Profile page -->
+        <section id="profile-page" class="page">
+          <h2 class="page-title">Profile</h2>
+
+          <div class="profile-card">
+            <p><strong>Name:</strong> <span id="profile-name"></span></p>
+            <p><strong>Serial ID:</strong> <span id="profile-serial"></span></p>
+            <p>
+              <strong>Vault Enabled:</strong>
+              <span id="profile-vault-enabled"></span>
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
