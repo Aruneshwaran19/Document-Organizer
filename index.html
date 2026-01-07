@@ -27,50 +27,49 @@
 
     <!-- Initial setup overlay -->
     <div id="setup-screen" class="setup-overlay hidden">
- <div class="setup-card setup-card-centered">
-  <div class="setup-brand">
-    <div class="setup-logo">🔐</div>
-    <h1 class="setup-title">DocVault</h1>
-    <p class="setup-tagline">Secure your documents. Stored locally.</p>
-  </div>
+      <div class="setup-card setup-card-centered">
+        <div class="setup-brand">
+          <div class="setup-logo">🔐</div>
+          <h1 class="setup-title">DocVault</h1>
+          <p class="setup-tagline">Secure your documents. Stored locally.</p>
+        </div>
 
-  <p class="setup-step">Initial setup</p>
+        <p class="setup-step">Initial setup</p>
 
-  <div class="field">
-    <label>Display Name</label>
-    <input
-      id="setup-displayname"
-      type="text"
-      placeholder="Enter your name (optional)"
-    />
-  </div>
+        <div class="field">
+          <label>Display Name</label>
+          <input
+            id="setup-displayname"
+            type="text"
+            placeholder="Enter your name (optional)"
+          />
+        </div>
 
-<div class="field">
-  <label>Enable Protected Vault</label>
-  <select id="setup-vault-choice">
-    <option value="yes">Yes – enable secure vault</option>
-    <option value="no">No – normal documents only</option>
-  </select>
-</div>
+        <div class="field">
+          <label>Enable Protected Vault</label>
+          <select id="setup-vault-choice">
+            <option value="yes">Yes – enable secure vault</option>
+            <option value="no">No – normal documents only</option>
+          </select>
+        </div>
 
-  <div id="password-area" class="field">
-    <label>Vault Password</label>
-    <input
-      id="setup-password"
-      type="password"
-      placeholder="Minimum 4 characters"
-    />
-    <p class="vault-warning">
-      ⚠ Password is never stored and cannot be recovered.
-    </p>
-  </div>
+        <div id="password-area" class="field">
+          <label>Vault Password</label>
+          <input
+            id="setup-password"
+            type="password"
+            placeholder="Minimum 4 characters"
+          />
+          <p class="vault-warning">
+            ⚠ Password is never stored and cannot be recovered.
+          </p>
+        </div>
 
-  <button id="setup-save-btn" class="btn btn-primary full-btn">
-    Get Started
-  </button>
-
-</div>
-
+        <button id="setup-save-btn" class="btn btn-primary full-btn">
+          Get Started
+        </button>
+      </div>
+    </div>
 
     <!-- Vault unlock modal -->
     <div id="vault-modal" class="modal hidden">
