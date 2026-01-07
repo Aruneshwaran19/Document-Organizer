@@ -187,16 +187,30 @@ function startSetup() {
 
 function finishSetup() {
   setupScreen.classList.add("hidden");
+
+  appContainer.classList.remove("hidden");
+
+  pages.forEach(p => p.classList.remove("visible"));
+  document.getElementById("dashboard-page")?.classList.add("visible");
+
+  navItems.forEach(n => n.classList.remove("active"));
+  document.querySelector('[data-page="dashboard-page"]')?.classList.add("active");
+
   initializeApp();
 }
+
 
 // App init
 function initializeApp() {
   appContainer.classList.remove("hidden");
 
+  switchPage("dashboard-page");
+  setActiveNav("dashboard-page");
+
   profileName.textContent = profile.displayName;
   profileSerial.textContent = profile.serialId;
   profileVaultEnabled.textContent = profile.vaultEnabled ? "Yes" : "No";
+
 
   normalDocs = load(STORAGE_NORMAL, []);
 
@@ -472,8 +486,42 @@ function renderRecentDocs() {
   });
 }
 
+const togglePasswordBtn = document.getElementById("toggle-password");
+if (togglePasswordBtn) {
+  togglePasswordBtn.onclick = () => {
+    const input = document.getElementById("setup-password");
+    input.type = input.type === "password" ? "text" : "password";
+  };
+}
+
+// Logout
+document.getElementById("logout-btn")?.addEventListener("click", () => {
+  if (!confirm("Log out from this device?")) return;
+
+  vaultUnlocked = false;
+  decryptedVaultData = [];
+  delete vaultPasswordInput.dataset.lastPassword;
+
+  localStorage.removeItem(STORAGE_PROFILE);
+  location.reload();
+});
+
 // Boot
 window.onload = () => {
   profile = load(STORAGE_PROFILE, null);
-  profile ? finishSetup() : startSetup();
+
+  if (!profile) {
+    startSetup();
+  } else {
+    setupScreen.classList.add("hidden");
+    appContainer.classList.remove("hidden");
+
+    pages.forEach(p => p.classList.remove("visible"));
+    document.getElementById("dashboard-page")?.classList.add("visible");
+
+    navItems.forEach(n => n.classList.remove("active"));
+    document.querySelector('[data-page="dashboard-page"]')?.classList.add("active");
+
+    initializeApp();
+  }
 };
