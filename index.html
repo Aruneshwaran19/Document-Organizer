@@ -27,9 +27,14 @@
 
     <!-- Initial setup overlay -->
     <div id="setup-screen" class="setup-overlay hidden">
-      <div class="setup-card">
-        <h2>Welcome</h2>
-        <p class="subtitle">Set up your profile to begin</p>
+      <div class="setup-card setup-card-centered">
+        <div class="setup-brand">
+          <div class="setup-logo">🔐</div>
+          <h1 class="setup-title">DocVault</h1>
+          <p class="setup-tagline">Secure your documents. Stored locally.</p>
+        </div>
+
+        <p class="setup-step">Initial setup</p>
 
         <div class="field">
           <label>Display Name</label>
@@ -41,24 +46,27 @@
         </div>
 
         <div class="field">
-          <label>Enable Protected Vault?</label>
+          <label>Enable Protected Vault</label>
           <select id="setup-vault-choice">
-            <option value="yes">Yes – I want a secure vault</option>
-            <option value="no">No – I only want normal documents</option>
+            <option value="yes">Yes – enable secure vault</option>
+            <option value="no">No – normal documents only</option>
           </select>
         </div>
 
         <div id="password-area" class="field">
-          <label>Set Vault Password</label>
+          <label>Vault Password</label>
           <input
             id="setup-password"
             type="password"
-            placeholder="Enter a strong password"
+            placeholder="Minimum 4 characters"
           />
+          <p class="vault-warning">
+            ⚠ Password is never stored and cannot be recovered.
+          </p>
         </div>
 
         <button id="setup-save-btn" class="btn btn-primary full-btn">
-          Continue
+          Get Started
         </button>
       </div>
     </div>
@@ -250,6 +258,14 @@
               <span id="profile-vault-enabled"></span>
             </p>
           </div>
+
+          <button
+            id="logout-btn"
+            class="btn btn-ghost"
+            style="margin-top: 16px; color: #f87171; border-color: #f87171"
+          >
+            Logout
+          </button>
         </section>
       </main>
     </div>
